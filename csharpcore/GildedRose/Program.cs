@@ -21,7 +21,7 @@ namespace GildedRoseKata
         private static IList<Item> GetItems()
         {
             return new List<Item>
-            {
+            {/*
                 new()
                 {
                     Name = ItemName.DexterityVest,
@@ -51,13 +51,13 @@ namespace GildedRoseKata
                     Name = ItemName.Sulfuras,
                     SellIn = -1,
                     Quality = 80
-                },
+                },*/
                 new()
                 {
                     Name = ItemName.BackstagePasses,
                     SellIn = 15,
                     Quality = 20
-                },
+                },/*
                 new()
                 {
                     Name = ItemName.BackstagePasses,
@@ -76,7 +76,7 @@ namespace GildedRoseKata
                     Name = ItemName.ConjuredManaCake,
                     SellIn = 3,
                     Quality = 6
-                }
+                }*/
             };
         }
     }

@@ -6,7 +6,7 @@ namespace GildedRoseKata
     public class GildedRose
     {
         IList<Item> Items;
-        private int _day = 0;
+        private int _day;
 
         public GildedRose(IList<Item> items)
         {
@@ -47,39 +47,48 @@ namespace GildedRoseKata
             switch (item.Name)
             {
                 case ItemName.Sulfuras:
-                    return;
+                    break;
                 case ItemName.AgedBrie:
                     if (item.Quality < 50)
-                        item.Quality += multiplier;
-                    return;
+                        ExecuteChangeOfQuality(item, 1, multiplier);
+                    break;
                 case ItemName.BackstagePasses:
                     AdjustQualityOfBackstagePass(item, multiplier);
-                    return;
+                    break;
                 default:
-                    if (item.Quality > 0)
-                        item.Quality -= multiplier;
-                    return;
+                    ExecuteChangeOfQuality(item, -1, multiplier);
+                    break;
             }
         }
 
         private static void AdjustQualityOfBackstagePass(Item item, int multiplier)
         {
-            if (item.SellIn <= 10)
+            switch (item.SellIn)
             {
-                item.Quality += (2 * multiplier);
-                return;
+                case <= 0:
+                    item.Quality = 0;
+                    break;
+                case <= 5:
+                    ExecuteChangeOfQuality(item, 3, multiplier);
+                    break;
+                case <= 10:
+                    ExecuteChangeOfQuality(item, 2, multiplier);
+                    break;
+                default:
+                    ExecuteChangeOfQuality(item, 1, multiplier);
+                    // TODO - RESOLVE AMBIGUITY - Confirm whether backstage passes should increase in value when sellIn > 10
+                    break;
             }
+        }
 
-            if (item.SellIn <= 5)
-            {
-                item.Quality += (3 * multiplier);
+        private static void ExecuteChangeOfQuality(Item item, int change, int multiplier)
+        {
+            var difference = change * multiplier;
+            if (item.Name == ItemName.Sulfuras)
                 return;
-            }
-
-            if (item.SellIn <= 0)
-            {
-                item.Quality = 0;
-            }
+            item.Quality += difference;
+            if (item.Quality > 50)
+                item.Quality = 50;
         }
 
         private static void AdjustSellIn(Item item)
