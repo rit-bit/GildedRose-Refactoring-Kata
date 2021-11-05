@@ -1,89 +1,105 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GildedRoseKata
 {
     public class GildedRose
     {
         IList<Item> Items;
-        public GildedRose(IList<Item> Items)
+        private int _day = 0;
+        public GildedRose(IList<Item> items)
         {
-            this.Items = Items;
+            Items = items;
         }
 
-        public void UpdateQuality()
+        public void ListInventory()
         {
-            for (var i = 0; i < Items.Count; i++)
+            Console.WriteLine($"-------- day {_day} --------");
+            Console.WriteLine("name, sellIn, quality");
+            foreach (var item in Items)
             {
-                if (Items[i].Name != "Aged Brie" && Items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
+                Console.WriteLine(item.Name + ", " + item.SellIn + ", " + item.Quality);
+            }
+
+            Console.WriteLine("");
+        }
+
+        public void AnotherDayPasses()
+        {
+            foreach (var item in Items)
+            {
+                if (item.Name != ItemName.AgedBrie && item.Name != ItemName.BackstagePasses)
                 {
-                    if (Items[i].Quality > 0)
+                    if (item.Quality > 0)
                     {
-                        if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
+                        if (item.Name != ItemName.Sulfuras)
                         {
-                            Items[i].Quality = Items[i].Quality - 1;
+                            item.Quality--;
                         }
                     }
                 }
                 else
                 {
-                    if (Items[i].Quality < 50)
+                    if (item.Quality < 50)
                     {
-                        Items[i].Quality = Items[i].Quality + 1;
+                        item.Quality++;
 
-                        if (Items[i].Name == "Backstage passes to a TAFKAL80ETC concert")
+                        if (item.Name == ItemName.BackstagePasses)
                         {
-                            if (Items[i].SellIn < 11)
+                            if (item.SellIn < 11)
                             {
-                                if (Items[i].Quality < 50)
+                                if (item.Quality < 50)
                                 {
-                                    Items[i].Quality = Items[i].Quality + 1;
+                                    item.Quality++;
                                 }
                             }
 
-                            if (Items[i].SellIn < 6)
+                            if (item.SellIn < 6)
                             {
-                                if (Items[i].Quality < 50)
+                                if (item.Quality < 50)
                                 {
-                                    Items[i].Quality = Items[i].Quality + 1;
+                                    item.Quality++;
                                 }
                             }
                         }
                     }
                 }
 
-                if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
+                if (item.Name != ItemName.Sulfuras)
                 {
-                    Items[i].SellIn = Items[i].SellIn - 1;
+                    item.SellIn--;
                 }
 
-                if (Items[i].SellIn < 0)
+                if (item.SellIn < 0)
                 {
-                    if (Items[i].Name != "Aged Brie")
+                    if (item.Name == ItemName.AgedBrie)
                     {
-                        if (Items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
+                        if (item.Quality < 50)
                         {
-                            if (Items[i].Quality > 0)
-                            {
-                                if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
-                                {
-                                    Items[i].Quality = Items[i].Quality - 1;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Items[i].Quality = Items[i].Quality - Items[i].Quality;
+                            item.Quality++;
                         }
                     }
                     else
                     {
-                        if (Items[i].Quality < 50)
+                        if (item.Name == ItemName.BackstagePasses)
                         {
-                            Items[i].Quality = Items[i].Quality + 1;
+                            item.Quality -= item.Quality;
+                        }
+                        else
+                        {
+                            if (item.Quality > 0)
+                            {
+                                if (item.Name != ItemName.Sulfuras)
+                                {
+                                    item.Quality--;
+                                }
+                            }
                         }
                     }
                 }
             }
+
+            _day++;
         }
     }
 }
